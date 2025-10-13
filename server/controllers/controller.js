@@ -53,4 +53,22 @@ const getlogin=async(req,res)=>{
 }
 
 
+const getUsers=async(req,res)=>{
+    try{
+        const users=await User.find()
+        res.json({
+            sucess:true,
+            data: users
+        });
+}
+catch(e){
+    res.json({
+        sucess:false,
+        message:"Failed to fetch users"
+    });
+}
+}
+
+
+
 export {postRegister, getUsers ,getBlogs,postBlogs ,getlogin ,getBlog, userBlogs, deleteBlog};

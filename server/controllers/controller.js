@@ -166,5 +166,30 @@ catch(e){
 }
 
 
+const deleteBlog=async(req,res)=>{
+    const {id}=req.params;
+    try{
+        const blog=await Blog.findByIdAndDelete(id);    
+        if(!blog){
+            return res.json({
+                sucess:false,
+                message:"Blog Not Found"
+            });
+        }
+        res.json({
+            sucess:true,
+            message:"Blog Deleted Successfully"
+        });
+
+    
+}
+catch(e){
+    res.json({
+        sucess:false,   
+        message:"Failed to delete blog"
+    });
+}   
+}
+
 
 export {postRegister, getUsers ,getBlogs,postBlogs ,getlogin ,getBlog, userBlogs, deleteBlog};

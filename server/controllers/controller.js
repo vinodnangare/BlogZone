@@ -103,4 +103,68 @@ const postBlogs=async(req,res)=>{
 };  
 
 
+const getBlogs=async(req,res)=>{
+    try{
+        const blogs=await Blog.find().populate("authorId","username email -_id")    
+        res.json({
+            sucess:true,
+            data: blogs
+        });
+}   
+catch(e){
+    res.json({
+        sucess:false,
+        message:"Failed to fetch blogs"
+    });
+}
+}
+
+const getBlog=async(req,res)=>{
+    
+    const {id}=req.params;
+  
+    try{
+        const blog = await Blog.findById(id).populate("authorId","username email -_id");
+        if(!blog){
+            return res.json({
+                sucess:false,
+                message:"Blog Not Found"
+            });
+        }
+        res.json({
+            sucess:true,
+            data: blog,
+            comments: await comment.find({blogId:blog._id}).select("-blogId -__v -createdAt -updatedAt")
+            
+        });
+    }
+    catch(e){
+        res.json({
+            sucess:false,
+            message:"Failed to fetch blog"
+        });
+    }
+
+
+}
+
+const userBlogs=async(req,res)=>{
+    const {id}=req.params;
+    try{
+        const blogs=await Blog.find({authorId:id}).populate("authorId","username email -_id")    
+        res.json({
+            sucess:true,
+            data: blogs
+        });
+}
+catch(e){
+    res.json({
+        sucess:false,
+        message:"Failed to fetch blogs of user"
+    });
+}   
+}
+
+
+
 export {postRegister, getUsers ,getBlogs,postBlogs ,getlogin ,getBlog, userBlogs, deleteBlog};

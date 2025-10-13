@@ -70,5 +70,37 @@ catch(e){
 }
 
 
+const postBlogs=async(req,res)=>{
+
+    const {title,content,authorId}=req.body;
+    try{
+
+     
+        const user=await User.findById(authorId);
+        if(!user){  
+            return res.json({
+                sucess:false,
+                message:"Author not found"
+            });
+        }
+        const blog={
+            title,content,authorId
+        };
+       const saveblog= await new Blog(blog).save();
+        res.json((  
+
+            {
+                "message":"Blog Created Successfully",
+            }
+        ));
+    }
+    catch(e){
+        res.json({
+            sucess:false,
+            message:"Failed to create blog"
+        });
+    }
+};  
+
 
 export {postRegister, getUsers ,getBlogs,postBlogs ,getlogin ,getBlog, userBlogs, deleteBlog};

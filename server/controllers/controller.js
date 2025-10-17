@@ -1,28 +1,37 @@
 import {User} from './../models/User.js';
 import {Blog} from './../models/Blog.js';
 import {comment} from './../models/Comment.js';
+
 const postRegister=async(req,res)=>{
-   
-    const {username, email,password}=req.body;
-
+    const {username,email,password}=req.body;
+    if(!username || !email || !password){
+        return res.json({
+            sucess:false,
+            message:"All fields are required"
+        });
+    }
+    const oldUser=await User.findOne({email:email});
+   if(oldUser){
+    return res.json({
+        sucess:false,
+        message:"User Already Exists"
+    });
+   }
     try{
-    const user={
-        username,email,password
-    };
-
-   const saveuser=  await new User(user).save();
-    res.json((
-        {
-           "message":"User Registered Successfully",  
-        }
-    ));
+        const user=new User({username,email,password});
+        await user.save();
+        res.json({
+            sucess:true,
+            message:"User Registered Successfully"
+        });
     }
-    catch{
-        res.send("Error While Registering User");
+    catch(e){
+        res.json({
+            sucess:false,
+            message:"Failed to register user"
+        });
     }
-};
-
-
+}
 
 const getlogin=async(req,res)=>{
     const {email,password}=req.body;
@@ -91,6 +100,10 @@ const postBlogs=async(req,res)=>{
 
             {
                 "message":"Blog Created Successfully",
+                "sucess":true,
+                "data":saveblog,
+                "state":'draft'
+                
             }
         ));
     }
@@ -191,5 +204,21 @@ catch(e){
 }   
 }
 
+const getPublished=async(req,res)=>{
+    try{
+        const blogs = await Blog.find({ state: "published" }).populate("authorId", "username email");
+        res.json({
+            sucess: true,
+            data: blogs
+        });
+    }   
+    catch(e){
+        res.json({  
+            sucess: false,  
+            message: "Failed to fetch published blogs"
+        });
+    }   
+}
 
-export {postRegister, getUsers ,getBlogs,postBlogs ,getlogin ,getBlog, userBlogs, deleteBlog};
+
+export {postRegister, getUsers ,getBlogs,postBlogs ,getlogin ,getBlog, userBlogs, deleteBlog, getPublished};

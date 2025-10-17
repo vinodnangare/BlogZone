@@ -8,7 +8,6 @@ import Blogs from './pages/Blogs.jsx'
 import DetailedBlog from './pages/DetailedBlog.jsx'
 
 import { Router, Routes, Route } from 'react-router'
-import { createBrowserHistory } from 'history'
 
 const history = createBrowserHistory()
 

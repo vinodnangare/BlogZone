@@ -312,21 +312,29 @@ const getComments = async (req, res) => {
 };
 
 
-const getBlogBySlug = async (req, res) => {
+export const getBlogBySlug = async (req, res) => {
   try {
     const { slug } = req.params;
-    const blog = await Blog.findOne({ slug }).populate('authorId', 'username email');
-    
-    if (!blog) {
-      return res.status(404).json({ sucess: false, message: 'Blog not found' });
+    const blog = await Blog.findOne({ slug }).populate('authorId', 'username email').lean();
+    if (!blog) return res.status(404).json({ sucess: false, message: 'Blog not found' });
+
+    if (blog.state === 'published' || blog.status === 'published') {
+      return res.json({ sucess: true, data: blog });
     }
-    
-    return res.json({ sucess: true, data: blog });
+
+    const auth = req.headers.authorization || req.headers.Authorization;
+    if (!auth || !auth.startsWith('Bearer ')) return res.status(404).json({ sucess: false, message: 'Blog not found' });
+    const token = auth.split(' ')[1];
+
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      if (String(decoded.id) === String(blog.authorId?._id)) return res.json({ sucess: true, data: blog });
+    } catch (e) {}
+
+    return res.status(404).json({ sucess: false, message: 'Blog not found' });
   } catch (e) {
-    console.error('getBlogBySlug error:', e);
     return res.status(500).json({ sucess: false, message: 'Server error' });
   }
 };
 
-
-export { postRegister, getUsers, getBlogs, postBlogs, getlogin, getBlog, userBlogs, deleteBlog, getPublished, patchBlog, postComment, getComments, getBlogBySlug };
+export { postRegister, getUsers, getBlogs, postBlogs, getlogin, getBlog, userBlogs, deleteBlog, getPublished, patchBlog, postComment, getComments };

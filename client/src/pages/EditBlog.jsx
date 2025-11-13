@@ -66,8 +66,8 @@ function EditBlog() {
     }
   };
 
-  if (loading) return <><Navbar /><div className="min-h-screen flex items-center justify-center">Loading...</div></>;
-  if (error) return <><Navbar /><div className="min-h-screen flex flex-col items-center justify-center px-4"><div className="text-red-600 mb-4">{error}</div><button onClick={() => navigate('/blogs')} className="px-4 py-2 bg-blue-500 text-white rounded">Back</button></div></>;
+  if (loading) return <><div className="min-h-screen flex items-center justify-center">Loading...</div></>;
+  if (error) return <><div className="min-h-screen flex flex-col items-center justify-center px-4"><div className="text-red-600 mb-4">{error}</div><button onClick={() => navigate('/blogs')} className="px-4 py-2 bg-blue-500 text-white rounded">Back</button></div></>;
 
   return (
     <>

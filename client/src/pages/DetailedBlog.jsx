@@ -97,7 +97,7 @@ function DetailedBlog() {
   if (loading) {
     return (
       <>
-        <Navbar />
+        
         <div className="min-h-screen flex items-center justify-center">Loading...</div>
       </>
     );
@@ -106,7 +106,8 @@ function DetailedBlog() {
   if (error || !blogData) {
     return (
       <>
-        <Navbar />
+      
+      
         <div className="min-h-screen flex flex-col items-center justify-center px-4">
           <div className="text-red-600 mb-4">{error || "Blog not found"}</div>
           <button onClick={() => navigate("/blogs")} className="px-4 py-2 bg-blue-500 text-white rounded">

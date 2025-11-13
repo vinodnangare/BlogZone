@@ -11,7 +11,32 @@ function Navbar() {
           Blog<span className="text-pink-600">Zone</span>
         </h1>
 
-        
+        {localStorage.getItem("user") ? (
+          <div className="flex gap-6 items-center">
+            Logged in as <span className="font-semibold">{JSON.parse(localStorage.getItem("user")).username}</span>
+            <Link 
+              to="/create"  
+              className="bg-white hover:bg-pink-100 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-all duration-200 shadow-sm"
+            >
+              Create Blog
+            </Link>
+            <Link to='/login'>
+              <button
+                className="cursor-pointer bg-pink-400 hover:bg-pink-500 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 shadow-sm"
+                onClick={() => {
+                  localStorage.removeItem("user");
+                }
+              }
+              >             
+                Logout
+              </button> 
+
+
+            </Link>
+          </div>
+        ) : (
+ 
+
         <div className="flex gap-6">
           <Link 
             to="/login" 
@@ -26,6 +51,7 @@ function Navbar() {
             Register
           </Link>
         </div>
+        )}
       </nav>
     </>
   );

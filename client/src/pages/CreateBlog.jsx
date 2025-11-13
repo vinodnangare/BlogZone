@@ -1,72 +1,123 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../index.css';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 function CreateBlog() {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [state, setState] = useState("draft");
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [type, setType] = useState('Technology');
+  const [state, setState] = useState('draft');
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleCreateBlog = async (e) => {
     e.preventDefault();
-    const user = JSON.parse(localStorage.getItem("user"));
-    const authorId = user._id;
+    const token = localStorage.getItem('token');
+    
+    if (!title.trim() || !content.trim()) {
+      alert('Title and content are required');
+      return;
+    }
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_DB_URL}/blogs`, {
-        title,
-        content,
-        state,
-        authorId
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_DB_URL}/blogs`,
+        { title, content, type, state },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-      if (response.data.sucess) {
-        alert("Blog Created Successfully");
-        window.location.href = "/blogs";
+      if (res.data && res.data.sucess) {
+        alert(`Blog ${state === 'published' ? 'published' : 'saved as draft'} successfully`);
+        navigate('/blogs');
       } else {
-        alert("Failed to create blog");
+        alert(res.data?.message || 'Failed to create blog');
       }
-    } catch (error) {
-      console.log("Failed to create blog", error);
+    } catch (e) {
+      console.error(e);
+      alert('Error creating blog');
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-8 p-6 bg-white shadow-lg rounded-2xl border border-gray-300">
-      <h1 className="text-2xl font-semibold mb-4 text-center">Create New Blog</h1>
+    <>
+      
+      <div className="max-w-2xl mx-auto p-6">
+        <div className="bg-white rounded-xl shadow p-8">
+          <h1 className="text-3xl font-bold mb-6">Create Blog</h1>
+          
+          <form onSubmit={handleCreateBlog} className="space-y-4">
+            <div>
+              <label className="block text-sm font-semibold mb-2">Title</label>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter blog title"
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
 
-      <input
-        type="text"
-        placeholder="Blog Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="w-full border border-gray-400 px-4 py-2 rounded-xl focus:outline-none focus:border-blue-500"
-      />
+            <div>
+              <label className="block text-sm font-semibold mb-2">Blog Type</label>
+              <select
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="Technology">Technology</option>
+                <option value="Health">Health</option>
+                <option value="Education">Education</option>
+                <option value="Travel">Travel</option>
+                <option value="Animal">Animal</option>
+                <option value="Lifestyle">Lifestyle</option>
+                <option value="Business">Business</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
 
-      <textarea
-        placeholder="Write your blog content here..."
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        rows="6"
-        className="w-full border border-gray-400 px-4 py-2 mt-4 rounded-xl focus:outline-none focus:border-blue-500"
-      ></textarea>
+            <div>
+              <label className="block text-sm font-semibold mb-2">Status</label>
+              <select
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+            </div>
 
-      <select
-        value={state}
-        onChange={(e) => setState(e.target.value)}
-        className="w-full border border-gray-400 px-4 py-2 mt-4 rounded-xl focus:outline-none focus:border-blue-500"
-      >
-        <option value="draft">Draft</option>
-        <option value="published">Published</option>
-      </select>
+            <div>
+              <label className="block text-sm font-semibold mb-2">Content</label>
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="Write your blog content here..."
+                className="w-full p-3 border rounded-lg h-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
 
-      <button
-        onClick={handleSubmit}
-        className="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-medium transition-all cursor-pointer"
-      >
-        Create Blog
-      </button>
-    </div>
+            <div className="flex gap-4">
+              <button
+                type="submit"
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold"
+              >
+                {state === 'published' ? 'Publish Blog' : 'Save as Draft'}
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate('/blogs')}
+                className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 font-semibold"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
   );
 }
 

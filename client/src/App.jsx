@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./index.css";
 import Login from "./pages/Login";
@@ -37,13 +37,21 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Navigate to="/blogs" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/create" element={<CreateBlog />} />
         <Route path="/edit/:id" element={<EditBlog />} />
         <Route path="/blog/:slug" element={<DetailedBlog />} />
+        <Route
+          path="*"
+          element={
+            <div className="min-h-screen flex items-center justify-center">
+              Not Found
+            </div>
+          }
+        />
       </Routes>
     </>
   );

@@ -13,7 +13,6 @@ function CreateBlog() {
   const handleCreateBlog = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    
     if (!title.trim() || !content.trim()) {
       alert('Title and content are required');
       return;
@@ -25,26 +24,22 @@ function CreateBlog() {
         { title, content, type, state },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       if (res.data && res.data.sucess) {
         alert(`Blog ${state === 'published' ? 'published' : 'saved as draft'} successfully`);
         navigate('/blogs');
       } else {
         alert(res.data?.message || 'Failed to create blog');
       }
-    } catch (e) {
-      console.error(e);
+    } catch {
       alert('Error creating blog');
     }
   };
 
   return (
     <>
-      
-      <div className="max-w-2xl mx-auto p-6">
-        <div className="bg-white rounded-xl shadow p-8">
-          <h1 className="text-3xl font-bold mb-6">Create Blog</h1>
-          
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="bg-white rounded-xl shadow p-6 sm:p-8">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-6">Create Blog</h1>
           <form onSubmit={handleCreateBlog} className="space-y-4">
             <div>
               <label className="block text-sm font-semibold mb-2">Title</label>
@@ -94,12 +89,12 @@ function CreateBlog() {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Write your blog content here..."
-                className="w-full p-3 border rounded-lg h-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-3 border rounded-lg h-48 sm:h-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 mt-4">
               <button
                 type="submit"
                 className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold"

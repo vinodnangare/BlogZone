@@ -1,71 +1,166 @@
-import React, { useEffect, useState } from 'react'
-import '../index.css';
-import { useParams, useNavigate } from 'react-router';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 function EditBlog() {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [type, setType] = useState('Technology');
   const [state, setState] = useState('draft');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const fetchBlogForEdit = async () => {
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_DB_URL}/blogs/${id}`);
-      if (response.data.sucess) {
-        const blog = response.data.data;
-        setTitle(blog.title || '');
-        setContent(blog.content || '');
-        setState(blog.state || 'draft');
-      } else {
-        alert('Failed to fetch blog for edit');
-      }
-    } catch (err) {
-      console.error('fetchBlogForEdit error', err);
-      alert('Failed to fetch blog');
-    }
-  }
+  const apiBase = import.meta.env.VITE_DB_URL || '';
 
   useEffect(() => {
-    fetchBlogForEdit();
-  }, [id]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const payload = { title, content, state };
-       const response = await axios.patch(`${import.meta.env.VITE_DB_URL}/edit/${id}`, payload);
-      if (response.data.sucess) {
-        navigate(`/blog/${id}`);
-      } else {
-        alert('Update failed');
+    const fetchBlog = async () => {
+      try {
+        const res = await axios.get(`${apiBase}/blogs/${id}`);
+        if (res?.data?.sucess && res.data.data) {
+          const blog = res.data.data;
+          setTitle(blog.title);
+          setContent(blog.content);
+          setType(blog.type || 'Technology');
+          setState(blog.state || 'draft');
+          setError(null);
+        } else {
+          setError('Blog not found');
+        }
+      } catch (e) {
+        console.error('Fetch blog error:', e);
+        setError('Failed to load blog');
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error('update error', err);
-      alert('Update error');
+    };
+
+    if (id) fetchBlog();
+  }, [id, apiBase]);
+
+  const handleUpdateBlog = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+
+    if (!title.trim() || !content.trim()) {
+      alert('Title and content are required');
+      return;
     }
-  }
+
+    try {
+      const res = await axios.patch(
+        `${apiBase}/edit/${id}`,
+        {
+          title,
+          content,
+          type,
+          state
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      console.log('Update response:', res.data);
+
+      if (res.data && res.data.sucess) {
+        alert(`Blog updated and ${state === 'published' ? 'published' : 'saved as draft'} successfully`);
+        navigate('/blogs');
+      } else {
+        alert(res.data?.message || 'Failed to update blog');
+      }
+    } catch (e) {
+      console.error('Update blog error:', e);
+      alert('Error updating blog');
+    }
+  };
+
+  if (loading) return <><Navbar /><div className="min-h-screen flex items-center justify-center">Loading...</div></>;
+  if (error) return <><Navbar /><div className="min-h-screen flex flex-col items-center justify-center"><div className="text-red-600 mb-4">{error}</div><button onClick={() => navigate('/blogs')} className="px-4 py-2 bg-blue-500 text-white rounded">Back</button></div></>;
 
   return (
     <>
-      <div className="max-w-2xl mx-auto p-4">
-        <h2 className="text-2xl font-bold mb-4">Edit Blog</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Title" className="border p-2" />
-          <textarea value={content} onChange={e => setContent(e.target.value)} placeholder="Content" rows={8} className="border p-2" />
-          <select value={state} onChange={e => setState(e.target.value)} className="border p-2 w-40">
-            <option value="draft">Draft</option>
-            <option value="published">Published</option>
-          </select>
-          <div>
-            <button type="submit" className="mt-3 p-2 bg-amber-300 rounded-[10px] cursor-pointer">Save</button>
-          </div>
-        </form>
+     
+      <div className="max-w-2xl mx-auto p-6">
+        <div className="bg-white rounded-xl shadow p-8">
+          <h1 className="text-3xl font-bold mb-6">Edit Blog</h1>
+
+          <form onSubmit={handleUpdateBlog} className="space-y-4">
+            <div>
+              <label className="block text-sm font-semibold mb-2">Title</label>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter blog title"
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold mb-2">Blog Type</label>
+              <select
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="Technology">Technology</option>
+                <option value="Health">Health</option>
+                <option value="Education">Education</option>
+                <option value="Travel">Travel</option>
+                <option value="Animal">Animal</option>
+                <option value="Lifestyle">Lifestyle</option>
+                <option value="Business">Business</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold mb-2">Status</label>
+              <select
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold mb-2">Content</label>
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="Write your blog content here..."
+                className="w-full p-3 border rounded-lg h-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+
+            <div className="flex gap-4">
+              <button
+                type="submit"
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold"
+              >
+                {state === 'published' ? 'Publish Blog' : 'Save as Draft'}
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate('/blogs')}
+                className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 font-semibold"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </>
-  )
+  );
 }
 
-export default EditBlog
+export default EditBlog;

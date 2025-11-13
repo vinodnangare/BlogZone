@@ -1,22 +1,17 @@
-import { StrictMode } from 'react'
+import React from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import axios from 'axios'
+import App from './App'
 import './index.css'
-import App from './App.jsx'
-import Login from './pages/Login.jsx'
-import Register from './pages/Register.jsx'
-import Blogs from './pages/Blogs.jsx'
-import DetailedBlog from './pages/DetailedBlog.jsx'
-import { BrowserRouter, Route, Routes } from 'react-router'
+
+const token = localStorage.getItem('token')
+if (token) axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
 createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-    <Routes>
-      <Route path='/blog/:id' element={<DetailedBlog />} />
-      <Route path='/login' element={<Login />} />
-      <Route path='/register' element={<Register />} />
-      <Route path='/blogs' element={<Blogs />} />
-      <Route path='/' element={<App />} />
-      <Route path='*' element={<div>404 Not Found</div>} />
-    </Routes>
-  </BrowserRouter>
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
 )

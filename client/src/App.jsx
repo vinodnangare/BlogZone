@@ -13,7 +13,6 @@ import Navbar from "./components/Navbar";
 function App() {
   const [publishedBlogs, setPublishedBlogs] = useState([]);
   const navigate = useNavigate();
-  console.log(`${import.meta.env.VITE_DB_URL}/published`);
   const fetchPublishedBlogs = async () => {
     try {
       const response = await axios.get(

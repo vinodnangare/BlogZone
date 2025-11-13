@@ -107,7 +107,7 @@ function DetailedBlog() {
     return (
       <>
       
-      
+
         <div className="min-h-screen flex flex-col items-center justify-center px-4">
           <div className="text-red-600 mb-4">{error || "Blog not found"}</div>
           <button onClick={() => navigate("/blogs")} className="px-4 py-2 bg-blue-500 text-white rounded">
@@ -175,7 +175,7 @@ function DetailedBlog() {
             ) : (
               <section className="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center">
                 <p className="text-gray-700 mb-3">Want to join the discussion?</p>
-                <button onClick={() => navigate("/login")} className="px-6 py-2 bg-blue-600 text-white rounded-lg">
+                <button onClick={() => navigate("/login")} className="px-6 py-2 bg-blue-600 text-white rounded-lg cursor-pointer">
                   Sign In to Comment
                 </button>
               </section>

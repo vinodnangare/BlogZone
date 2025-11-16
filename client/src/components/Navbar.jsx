@@ -30,7 +30,7 @@ function Navbar() {
                   <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
                 </svg>
               </div>
-              <span className="text-xl font-bold text-gray-800">Tiny<span className="text-pink-500">Blog</span></span>
+              <span className="text-xl font-bold text-gray-800">Blog<span className="text-pink-500">Zone</span></span>
             </Link>
           </div>
 

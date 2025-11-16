@@ -69,8 +69,8 @@ app.delete('/blogs/:id', jwtCheck, deleteBlog);
 const clientDist = path.join(process.cwd(), '../client/dist');
 if (fs.existsSync(clientDist)) {
   app.use(express.static(clientDist));
-  app.get('*', (req, res) => {
-    if (req.path.startsWith('/api') || req.path.startsWith('/blogs') || req.path.startsWith('/login') || req.path.startsWith('/register')) {
+  app.use((req, res) => {
+    if (req.method !== 'GET' || (req.headers.accept && req.headers.accept.includes('application/json'))) {
       return res.status(404).json({ sucess: false, message: 'Not Found' });
     }
     res.sendFile(path.join(clientDist, 'index.html'));

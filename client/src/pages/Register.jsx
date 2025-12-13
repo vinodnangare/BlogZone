@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -62,25 +61,29 @@ function Register() {
 
   return (
     <>
-     
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
-        <div className="w-full max-w-md">
+      <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-4 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-16 -right-10 h-48 w-48 bg-teal-200/40 blur-3xl rounded-full" />
+          <div className="absolute -bottom-10 -left-10 h-56 w-56 bg-cyan-200/40 blur-3xl rounded-full" />
+        </div>
+
+        <div className="w-full max-w-md relative">
           <div className="text-center mb-8">
-            <div className="inline-block p-3 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full mb-4">
+            <div className="inline-block p-3 bg-gradient-to-br from-teal-500 to-cyan-400 rounded-full mb-4 shadow-lg shadow-teal-500/30">
               <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
               </svg>
             </div>
-            <h1 className="text-3xl font-bold text-gray-800">Create Account</h1>
-            <p className="text-gray-600 mt-2">Join  BlogZone and start writing</p>
+            <h1 className="text-3xl font-bold text-slate-900">Create Account</h1>
+            <p className="text-slate-600 mt-2">Join BlogZone and start writing</p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-8 backdrop-blur-sm bg-opacity-95">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 border border-slate-100">
             <form onSubmit={handleRegister} className="space-y-5">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Username</label>
+                <label className="block text-sm font-semibold text-slate-800 mb-2">Username</label>
                 <div className="relative">
-                  <svg className="w-5 h-5 text-gray-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <input
@@ -88,16 +91,17 @@ function Register() {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Choose a username"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                    className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition bg-white focus:shadow-[0_10px_35px_rgba(45,212,191,0.15)]"
                     required
                   />
+                  <p className="text-xs text-slate-500 mt-2">Public name shown on your posts.</p>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                <label className="block text-sm font-semibold text-slate-800 mb-2">Email Address</label>
                 <div className="relative">
-                  <svg className="w-5 h-5 text-gray-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                   <input
@@ -105,16 +109,17 @@ function Register() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                    className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition bg-white focus:shadow-[0_10px_35px_rgba(45,212,191,0.15)]"
                     required
                   />
+                  <p className="text-xs text-slate-500 mt-2">Use a reachable email for verification.</p>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                <label className="block text-sm font-semibold text-slate-800 mb-2">Password</label>
                 <div className="relative">
-                  <svg className="w-5 h-5 text-gray-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                   <input
@@ -122,10 +127,10 @@ function Register() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter password (min 6 chars)"
-                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                    className="w-full pl-10 pr-12 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition bg-white focus:shadow-[0_10px_35px_rgba(45,212,191,0.15)]"
                     required
                   />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600">
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-3.5 text-slate-400 hover:text-slate-600 cursor-pointer">
                     {showPassword ? (
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -142,9 +147,9 @@ function Register() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
+                <label className="block text-sm font-semibold text-slate-800 mb-2">Confirm Password</label>
                 <div className="relative">
-                  <svg className="w-5 h-5 text-gray-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <input
@@ -152,10 +157,10 @@ function Register() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Confirm your password"
-                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                    className="w-full pl-10 pr-12 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition bg-white focus:shadow-[0_10px_35px_rgba(45,212,191,0.15)]"
                     required
                   />
-                  <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600">
+                  <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-3.5 text-slate-400 hover:text-slate-600 cursor-pointer">
                     {showConfirmPassword ? (
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -171,7 +176,7 @@ function Register() {
                 </div>
               </div>
 
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-700">
+              <div className="bg-teal-50 border border-teal-200 rounded-lg p-3 text-sm text-teal-800">
                 <p className="font-semibold mb-1">Password Requirements:</p>
                 <ul className="text-xs space-y-1">
                   <li>✓ Minimum 6 characters</li>
@@ -179,7 +184,11 @@ function Register() {
                 </ul>
               </div>
 
-              <button type="submit" disabled={loading} className="w-full py-3 px-4 bg-gradient-to-r from-purple-500 to-blue-600 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-semibold rounded-lg hover:from-teal-600 hover:to-cyan-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg shadow-teal-500/30 hover:-translate-y-0.5 active:translate-y-0 transform duration-150 cursor-pointer"
+              >
                 {loading ? (
                   <>
                     <svg className="w-5 h-5 mr-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -198,17 +207,17 @@ function Register() {
               </button>
             </form>
 
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <p className="text-center text-gray-600">
+            <div className="mt-6 pt-6 border-t border-slate-200">
+              <p className="text-center text-slate-600">
                 Already have an account?{' '}
-                <button onClick={() => navigate('/login')} className="text-purple-600 hover:text-purple-700 font-semibold hover:underline">
+                <button onClick={() => navigate('/login')} className="text-teal-600 hover:text-teal-700 font-semibold hover:underline cursor-pointer">
                   Sign in
                 </button>
               </p>
             </div>
           </div>
 
-          <div className="mt-6 text-center text-xs text-gray-500">
+          <div className="mt-6 text-center text-xs text-slate-500">
             <p>By registering, you agree to our Terms & Conditions</p>
           </div>
         </div>

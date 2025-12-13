@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import Loader from '../components/Loader';
 
 function EditBlog() {
   const { id } = useParams();
@@ -108,10 +109,10 @@ function EditBlog() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 mt-4">
-              <button type="submit" className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold">
+              <button type="submit" className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold cursor-pointer">
                 {state === 'published' ? 'Publish Blog' : 'Save as Draft'}
               </button>
-              <button type="button" onClick={() => navigate('/blogs')} className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 font-semibold">
+              <button type="button" onClick={() => navigate('/blogs')} className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 font-semibold cursor-pointer">
                 Cancel
               </button>
             </div>

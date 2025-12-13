@@ -5,8 +5,13 @@ import axios from 'axios';
 import App from './App';
 import './index.css';
 
-if (import.meta.env.VITE_DB_URL) {
-  axios.defaults.baseURL = import.meta.env.VITE_DB_URL;
+const apiBase =
+  import.meta.env.VITE_DB_URL ||
+  import.meta.env.VITE_API_URL ||
+  (typeof window !== 'undefined' ? window.location.origin : '');
+
+if (apiBase) {
+  axios.defaults.baseURL = apiBase;
 }
 
 const token = localStorage.getItem('token');

@@ -81,7 +81,7 @@ function Navbar() {
                 <Link to="/login" role="menuitem" onClick={() => setOpen(false)} className="block px-3 py-2 rounded-lg text-base font-medium text-slate-300 hover:text-white hover:bg-slate-700 transition-colors duration-200">Login</Link>
               </li>
               <li role="none">
-                <Link to="/register" role="menuitem" onClick={() => setOpen(false)} className="block px-3 py-2 rounded-lg text-base font-medium bg-teal-500 text-white hover:bg-teal-400 font-semibold transition-colors duration-200">Get Started</Link>
+                <Link to="/register" role="menuitem" onClick={() => setOpen(false)} className="block px-3 py-2 rounded-lg text-base font-semibold bg-teal-500 text-white hover:bg-teal-400 transition-colors duration-200">Get Started</Link>
               </li>
             </>
           )}

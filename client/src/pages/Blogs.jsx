@@ -95,7 +95,7 @@ function Blogs() {
   };
 
   const handleShare = (blog, platform) => {
-    const url = `${window.location.origin}/blog/${blog.slug || blog._id}`;
+    const url = `${window.location.origin}/#/blog/${blog.slug || blog._id}`;
     const title = encodeURIComponent(blog.title);
     const text = encodeURIComponent(`Check out this article: ${blog.title}`);
 

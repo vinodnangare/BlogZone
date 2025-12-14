@@ -125,7 +125,7 @@ function DetailedBlog() {
   const isAuthor = currentUser?._id && (author._id === currentUser._id || author.id === currentUser._id);
 
   const handleShare = (platform) => {
-    const url = `${window.location.origin}/blog/${blogData.slug || blogData._id}`;
+    const url = `${window.location.origin}/#/blog/${blogData.slug || blogData._id}`;
     const title = encodeURIComponent(blogData.title);
     const text = encodeURIComponent(`Check out this article: ${blogData.title}`);
 

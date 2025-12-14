@@ -99,11 +99,12 @@ function Blogs() {
     const title = encodeURIComponent(blog.title);
     const text = encodeURIComponent(`Check out this article: ${blog.title}`);
 
+    const encodedUrl = encodeURIComponent(url);
     const shareUrls = {
-      twitter: `https://twitter.com/intent/tweet?text=${title}&url=${url}`,
-      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-      whatsapp: `https://wa.me/?text=${text}%20${url}`,
+      twitter: `https://twitter.com/intent/tweet?text=${title}&url=${encodedUrl}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+      whatsapp: `https://wa.me/?text=${text}%20${encodedUrl}`,
       copy: url,
     };
 

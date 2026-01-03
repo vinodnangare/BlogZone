@@ -81,17 +81,26 @@ function DetailedBlog() {
 
     setCommentLoading(true);
     try {
+      const token = localStorage.getItem("token");
       const res = await axios.post(
         `${apiBase}/blogs/${blogData._id}/comments`,
         { content: newComment, userId: currentUser._id },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        { 
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          } 
+        }
       );
       if (res?.data?.sucess) {
         setComments((s) => [res.data.data, ...s]);
         setNewComment("");
+      } else {
+        alert(res?.data?.message || "Failed to post comment");
       }
-    } catch {
-      alert("Failed to post comment");
+    } catch (error) {
+      console.error("Comment error:", error?.response?.data || error.message);
+      alert(error?.response?.data?.message || "Failed to post comment");
     } finally {
       setCommentLoading(false);
     }

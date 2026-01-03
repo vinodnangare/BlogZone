@@ -9,6 +9,8 @@ import CreateBlog from "./pages/CreateBlog";
 import EditBlog from "./pages/EditBlog";
 import DetailedBlog from "./pages/DetailedBlog";
 import Navbar from "./components/Navbar";
+import ScrollToTop from "./components/ScrollToTop";
+import ServerStatus from "./components/ServerStatus";
 
 function App() {
   const [publishedBlogs, setPublishedBlogs] = useState([]);
@@ -35,7 +37,9 @@ function App() {
 
   return (
     <>
+      <ServerStatus />
       <Navbar />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Navigate to="/blogs" replace />} />
         <Route path="/login" element={<Login />} />
